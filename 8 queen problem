@@ -1,0 +1,88 @@
+from collections import deque
+
+# Function to display the puzzle state
+def display_puzzle(puzzle):
+    for row in puzzle:
+        print(row)
+    print()
+
+# Function to find the position of the blank (zero)
+def find_blank(puzzle):
+    for i in range(3):
+        for j in range(3):
+            if puzzle[i][j] == 0:
+                return i, j
+
+# Function to generate possible moves (neighbors)
+def generate_neighbors(puzzle):
+    neighbors = []
+    blank_x, blank_y = find_blank(puzzle)
+    
+    # Possible moves: up, down, left, right
+    directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]
+    
+    for dx, dy in directions:
+        new_x, new_y = blank_x + dx, blank_y + dy
+        
+        if 0 <= new_x < 3 and 0 <= new_y < 3:
+            new_puzzle = [row[:] for row in puzzle]
+            new_puzzle[blank_x][blank_y], new_puzzle[new_x][new_y] = new_puzzle[new_x][new_y], new_puzzle[blank_x][blank_y]
+            neighbors.append(new_puzzle)
+    
+    return neighbors
+
+# BFS algorithm to solve the 8-puzzle problem
+def bfs(puzzle, goal):
+    queue = deque([(puzzle, [])])
+    visited = set()
+    
+    while queue:
+        current, path = queue.popleft()
+        
+        # If goal is reached, return the solution path
+        if current == goal:
+            return path + [current]
+        
+        # Convert the current state to a tuple to mark it as visited
+        current_tuple = tuple(tuple(row) for row in current)
+        if current_tuple in visited:
+            continue
+        
+        visited.add(current_tuple)
+        
+        # Generate neighbors (possible moves) and add them to the queue
+        for neighbor in generate_neighbors(current):
+            queue.append((neighbor, path + [current]))
+    
+    return None  # No solution found
+
+def main():
+    # Initial state of the puzzle
+    puzzle = [
+        [1, 2, 3],
+        [4, 0, 5],
+        [6, 7, 8]
+    ]
+    
+    # Goal state of the puzzle
+    goal = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 0]
+    ]
+    
+    print("Initial puzzle state:")
+    display_puzzle(puzzle)
+    
+    # Solve the puzzle using BFS
+    solution = bfs(puzzle, goal)
+    
+    if solution:
+        print("Solution found:")
+        for step in solution:
+            display_puzzle(step)
+    else:
+        print("No solution exists")
+
+if __name__ == "__main__":
+    main()
