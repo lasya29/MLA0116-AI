@@ -1,0 +1,54 @@
+# Function to check if the current color assignment is valid
+def is_valid(graph, color_assignment, region, color):
+    for neighbor in graph[region]:
+        if color_assignment.get(neighbor) == color:
+            return False
+    return True
+
+# Backtracking function to solve the CSP
+def map_coloring(graph, colors, color_assignment, region):
+    # If all regions are assigned a color, return the color assignment
+    if len(color_assignment) == len(graph):
+        return color_assignment
+
+    # Get all possible colors for the region
+    for color in colors:
+        if is_valid(graph, color_assignment, region, color):
+            # Assign the color to the region
+            color_assignment[region] = color
+            
+            # Move to the next region
+            next_region = next(r for r in graph if r not in color_assignment)
+            result = map_coloring(graph, colors, color_assignment, next_region)
+            
+            if result:  # If successful, return the result
+                return result
+            
+            # Backtrack: remove the color assignment
+            color_assignment.pop(region)
+    
+    return None  # If no valid color assignment is found
+
+# Define the map as a graph (adjacency list)
+graph = {
+    'A': ['B', 'C', 'D'],
+    'B': ['A', 'D'],
+    'C': ['A', 'D'],
+    'D': ['A', 'B', 'C']
+}
+
+# Available colors
+colors = ['Red', 'Green', 'Blue']
+
+# Initialize an empty color assignment
+color_assignment = {}
+
+# Solve the map coloring problem starting from the first region
+start_region = 'A'
+result = map_coloring(graph, colors, color_assignment, start_region)
+
+# Output the result
+if result:
+    print("Color assignment:", result)
+else:
+    print("No solution found")
