@@ -1,0 +1,71 @@
+from heapq import heappop, heappush
+
+# A* algorithm implementation
+def a_star(graph, start, goal):
+    # Priority queue to store (f_score, node)
+    open_list = []
+    heappush(open_list, (0, start))
+    
+    # Store cost from start to each node (g_score)
+    g_score = {node: float('inf') for node in graph}
+    g_score[start] = 0
+    
+    # Store the estimated total cost of reaching the goal (f_score)
+    f_score = {node: float('inf') for node in graph}
+    f_score[start] = heuristic(start, goal)
+    
+    # To reconstruct the path
+    came_from = {}
+    
+    while open_list:
+        # Get the node with the lowest f_score
+        current_f, current = heappop(open_list)
+        
+        # If the goal is reached, reconstruct the path
+        if current == goal:
+            return reconstruct_path(came_from, current)
+        
+        # Explore the neighbors
+        for neighbor, cost in graph[current]:
+            tentative_g_score = g_score[current] + cost
+            
+            if tentative_g_score < g_score[neighbor]:
+                # This is the best path so far, record it
+                came_from[neighbor] = current
+                g_score[neighbor] = tentative_g_score
+                f_score[neighbor] = g_score[neighbor] + heuristic(neighbor, goal)
+                
+                # Add the neighbor to the open list if not already there
+                heappush(open_list, (f_score[neighbor], neighbor))
+    
+    return None  # If no path is found
+
+# Heuristic function: Manhattan distance
+def heuristic(node, goal):
+    # Assuming node and goal are tuples (x, y)
+    return abs(node[0] - goal[0]) + abs(node[1] - goal[1])
+
+# Reconstruct the path from start to goal
+def reconstruct_path(came_from, current):
+    total_path = [current]
+    while current in came_from:
+        current = came_from[current]
+        total_path.append(current)
+    return total_path[::-1]  # Reverse the path to get start -> goal
+
+# Example graph (using coordinates and distances)
+graph = {
+    (0, 0): [((1, 0), 1), ((0, 1), 1)],
+    (1, 0): [((0, 0), 1), ((1, 1), 1)],
+    (0, 1): [((0, 0), 1), ((1, 1), 1)],
+    (1, 1): [((1, 0), 1), ((0, 1), 1), ((2, 1), 1)],
+    (2, 1): [((1, 1), 1)]
+}
+
+# Define start and goal
+start = (0, 0)
+goal = (2, 1)
+
+# Call the A* function and print the result
+path = a_star(graph, start, goal)
+print("Shortest path from start to goal:", path)
