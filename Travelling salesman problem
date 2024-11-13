@@ -1,0 +1,42 @@
+from itertools import permutations
+
+# Define the TSP function to find the minimum path cost
+def tsp(graph, start):
+    # Number of cities
+    n = len(graph)
+    
+    # Initialize the minimum path cost as infinity
+    min_path_cost = float('inf')
+    
+    # Generate all possible routes (permutations) excluding the start city
+    cities = list(range(n))
+    cities.remove(start)
+    
+    # Try every permutation of cities and calculate the cost
+    for perm in permutations(cities):
+        # Add start city to the path at the beginning and the end
+        current_path = [start] + list(perm) + [start]
+        
+        # Calculate the total path cost for this permutation
+        current_cost = 0
+        for i in range(n):
+            current_cost += graph[current_path[i]][current_path[i + 1]]
+        
+        # Update the minimum path cost
+        min_path_cost = min(min_path_cost, current_cost)
+    
+    return min_path_cost
+
+# Example graph (distance matrix)
+graph = [
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+]
+
+# Start city (0 represents the first city)
+start = 0
+
+# Call the TSP function and print the result
+print("Minimum cost to complete the tour:", tsp(graph, start))
