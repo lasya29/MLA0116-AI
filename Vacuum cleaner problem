@@ -1,0 +1,27 @@
+# Function to simulate the vacuum cleaner in a 2-room environment
+def vacuum_cleaner():
+    # Initialize the rooms with dirty or clean status
+    room_A = input("Is Room A dirty? (yes/no): ").strip().lower()
+    room_B = input("Is Room B dirty? (yes/no): ").strip().lower()
+    
+    # Vacuum starts in Room A
+    print("\nVacuum is in Room A.")
+    
+    if room_A == "yes":
+        print("Room A is dirty. Cleaning Room A...")
+        room_A = "no"  # After cleaning, Room A becomes clean
+        print("Room A is now clean.")
+    
+    print("Moving to Room B.")
+    
+    if room_B == "yes":
+        print("Room B is dirty. Cleaning Room B...")
+        room_B = "no"  # After cleaning, Room B becomes clean
+        print("Room B is now clean.")
+    
+    # Check if both rooms are clean
+    if room_A == "no" and room_B == "no":
+        print("\nBoth rooms are clean. Task complete!")
+
+# Run the vacuum cleaner simulation
+vacuum_cleaner()
