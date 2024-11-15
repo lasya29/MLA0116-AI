@@ -1,0 +1,19 @@
+% Facts
+father(john, mike).       % John is the father of Mike
+father(john, lisa).       % John is the father of Lisa
+mother(susan, mike).     % Susan is the mother of Mike
+mother(susan, lisa).     % Susan is the mother of Lisa
+
+% Rule to find if someone is a parent (either mother or father)
+parent(X, Y) :- father(X, Y).   % X is a parent of Y if X is a father of Y
+parent(X, Y) :- mother(X, Y).   % X is a parent of Y if X is a mother of Y
+
+% Rule to find if someone is a sibling (having the same parents)
+sibling(X, Y) :- parent(Z, X), parent(Z, Y), X \= Y.   % X and Y are siblings if they have the same parent, and X is not Y
+
+% Queries:
+% To check if John is a parent of Mike:
+% ?- parent(john, mike).
+
+% To check if Lisa and Mike are siblings:
+% ?- sibling(lisa, mike).
