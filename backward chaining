@@ -1,0 +1,19 @@
+% Facts
+parent(john, mary).       % John is a parent of Mary
+parent(mary, susan).      % Mary is a parent of Susan
+parent(bob, alice).       % Bob is a parent of Alice
+
+% Rules
+grandparent(X, Y) :-
+    parent(X, Z),         % X is a parent of Z
+    parent(Z, Y).         % Z is a parent of Y
+
+% Queries
+% To check if John is a grandparent of Susan:
+% ?- grandparent(john, susan).
+
+% To check if Bob is a grandparent of Alice:
+% ?- grandparent(bob, alice).
+
+% To find all grandparents of Susan:
+% ?- grandparent(X, susan).
