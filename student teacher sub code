@@ -1,0 +1,27 @@
+% Facts
+student(john).
+student(sara).
+student(alex).
+
+teacher(mr_brown).
+teacher(ms_green).
+
+subject(cs101).
+subject(math201).
+
+% Relationships
+teaches(mr_brown, cs101).
+teaches(ms_green, math201).
+
+enrolled(john, cs101).
+enrolled(sara, math201).
+enrolled(alex, cs101).
+
+% Rule to find which teacher teaches a student
+find_teacher(Student, Teacher) :-
+    enrolled(Student, Subject),
+    teaches(Teacher, Subject).
+fin
+% Example queries:
+% ?- find_teacher(john, Teacher).
+% ?- find_teacher(sara, Teacher).
