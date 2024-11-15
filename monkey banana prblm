@@ -1,0 +1,10 @@
+% Define the initial state: monkey is at the door, on the floor, without the banana.
+initial_state(state(atDoor, onFloor, hasBanana, no)).
+
+% Define an action where the monkey grasps the banana.
+move(state(atDoor, onFloor, hasBanana, no), grasp, state(atDoor, onFloor, hasBanana, yes)).
+
+% Additional actions can be defined similarly if needed.
+
+% Example query to test the action and check the resulting state.
+% Use: ?- move(state(atDoor, onFloor, hasBanana, no), Action, ResultingState).
