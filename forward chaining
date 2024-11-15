@@ -1,0 +1,22 @@
+% Facts
+parent(john, mary).     % John is a parent of Mary
+parent(mary, lucy).     % Mary is a parent of Lucy
+parent(john, paul).     % John is a parent of Paul
+parent(paul, anna).     % Paul is a parent of Anna
+
+% Rules
+grandparent(X, Y) :- parent(X, Z), parent(Z, Y). % X is a grandparent of Y if X is a parent of Z and Z is a parent of Y
+sibling(X, Y) :- parent(Z, X), parent(Z, Y), X \= Y. % X and Y are siblings if they share the same parent Z
+
+% Queries
+% Check if John is a grandparent of Anna
+% ?- grandparent(john, anna).
+% Expected Output: true.
+
+% Check if Mary and Paul are siblings
+% ?- sibling(mary, paul).
+% Expected Output: true.
+
+% Check if Lucy has any siblings
+% ?- sibling(lucy, Sibling).
+% Expected Output: paul.
