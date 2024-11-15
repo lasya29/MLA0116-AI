@@ -1,0 +1,29 @@
+% Facts
+has_symptom(john, fever).
+has_symptom(john, cough).
+has_symptom(john, headache).
+has_symptom(mary, fever).
+has_symptom(mary, sore_throat).
+has_symptom(mary, fatigue).
+has_symptom(alex, headache).
+has_symptom(alex, runny_nose).
+
+% Rules for diagnosis
+diagnosis(Person, flu) :-
+    has_symptom(Person, fever),
+    has_symptom(Person, cough),
+    has_symptom(Person, headache).
+
+diagnosis(Person, cold) :-
+    has_symptom(Person, sore_throat),
+    has_symptom(Person, fatigue),
+    has_symptom(Person, fever).
+
+diagnosis(Person, common_cold) :-
+    has_symptom(Person, headache),
+    has_symptom(Person, runny_nose).
+
+% Query to diagnose a person
+diagnose(Person) :-
+    diagnosis(Person, Condition),
+    write(mary), write(' may have '), write(headache), nl.
